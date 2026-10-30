@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dino IA</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="topbar">
+        <div class="brand-mark">D</div>
+        <div>
+          <h1>Dino IA</h1>
+          <p>Treine uma rede neural e acompanhe cada decisão.</p>
+        </div>
+        <div class="keyboard-hint">Espaço / ↑ pular <span>·</span> ↓ agachar</div>
+      </header>
+
+      <main class="dashboard">
+        <div class="left-column">
+          <section class="brain card">
+            <div class="brain-heading">
+              <div>
+                <span class="eyebrow">VISUALIZAÇÃO AO VIVO</span>
+                <h2>Rede neural</h2>
+                <p>Ativações, pesos e decisão da melhor rede da população.</p>
+              </div>
+              <span class="brain-shape" id="brain-shape">6 entradas · 8 ocultos · 2 saídas</span>
+            </div>
+            <div class="brain-scroll">
+              <canvas id="brain" width="1100" height="320" aria-label="Visualização da rede neural do dinossauro"></canvas>
+            </div>
+            <div class="brain-legend" aria-label="Legenda da rede neural">
+              <span><i class="legend-dot input-dot"></i>Sensores</span>
+              <span><i class="legend-dot hidden-dot"></i>Camada oculta</span>
+              <span><i class="legend-dot output-dot"></i>Ações</span>
+              <span><i class="legend-line positive-line"></i>Peso positivo</span>
+              <span><i class="legend-line negative-line"></i>Peso negativo</span>
+              <span class="legend-note">Brilho = ativação · espessura = peso</span>
+            </div>
+          </section>
+
+          <section class="progress card" aria-labelledby="progress-title">
+            <div class="progress-heading">
+              <div>
+                <span class="eyebrow">EVOLUÇÃO</span>
+                <h2 id="progress-title">Melhora entre gerações</h2>
+              </div>
+              <div class="progress-meta">
+                <div class="fitness-legend"><span><i class="series-key record-key"></i>Recorde</span><span><i class="series-key generation-key"></i>Geração</span></div>
+                <span class="fitness-summary" id="fitness-summary">Aguardando primeira geração</span>
+              </div>
+            </div>
+            <canvas id="fitness-chart" width="900" height="240" role="img" aria-label="Gráfico do melhor fitness em cada geração"></canvas>
+          </section>
+        </div>
+
+        <aside class="right-column">
+          <section class="stage card" aria-labelledby="simulation-title">
+            <div class="sim-heading">
+              <div>
+                <span class="eyebrow">SIMULAÇÃO</span>
+                <h2 id="simulation-title">Dino Runner</h2>
+              </div>
+              <span class="mode-badge" id="mode">Treino (evolução)</span>
+            </div>
+            <div class="game-viewport" id="game-viewport">
+              <canvas id="game" width="900" height="300" aria-label="Simulação do jogo do dinossauro"></canvas>
+              <div class="fullscreen-controls">
+                <button class="screen-button" id="btn-fullscreen" type="button" title="Expandir simulação" aria-label="Expandir simulação">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+                </button>
+                <button class="screen-button" id="btn-exit-fullscreen" type="button" title="Voltar ao tamanho normal" aria-label="Voltar ao tamanho normal" hidden>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5" /></svg>
+                </button>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat"><span>Geração</span><strong id="stat-gen">1</strong></div>
+              <div class="stat"><span>Vivos</span><strong id="stat-alive">80</strong></div>
+              <div class="stat"><span>Melhor fitness</span><strong id="stat-best">0</strong></div>
+              <div class="stat"><span>Score</span><strong id="stat-score">0</strong></div>
+            </div>
+            <div class="controls">
+              <button class="primary" id="btn-train">Treinar população</button>
+              <button id="btn-champ">Ver campeão</button>
+              <button id="btn-play">Jogar você</button>
+              <button id="btn-reset">Nova espécie</button>
+            </div>
+          </section>
+
+          <section class="settings card" aria-labelledby="settings-title">
+            <div class="settings-heading">
+              <div><span class="eyebrow">CONTROLES</span><h2 id="settings-title">Configurar simulação</h2></div>
+            </div>
+            <div class="setting-label"><label for="speed">Velocidade</label><output id="speed-value" for="speed">4x</output></div>
+            <input id="speed" type="range" min="0.5" max="20" step="0.5" value="4" />
+            <div class="setting-label obstacle-label"><label for="cactus-share">Cactos</label><output id="cactus-value" for="cactus-share">72%</output></div>
+            <input id="cactus-share" type="range" min="0" max="100" step="1" value="72" />
+            <div class="setting-label"><label for="bird-share">Pássaros</label><output id="bird-value" for="bird-share">28%</output></div>
+            <input id="bird-share" type="range" min="0" max="100" step="1" value="28" />
+            <p class="mix-note">A proporção dos obstáculos soma 100%.</p>
+            <div class="auto-mix-row">
+              <label for="auto-obstacle-mix">Mudar proporção a cada geração</label>
+              <label class="switch" aria-label="Alternar variação automática dos obstáculos">
+                <input id="auto-obstacle-mix" type="checkbox" />
+                <span class="switch-track"></span>
+              </label>
+            </div>
+            <div class="model-tools">
+              <strong>Rede treinada</strong>
+              <div class="model-actions">
+                <button id="btn-save-network">Salvar rede</button>
+                <button id="btn-load-network">Carregar rede</button>
+                <input id="network-file" type="file" accept=".json,application/json" hidden />
+              </div>
+              <p id="model-status" class="model-status" aria-live="polite">Importe ou exporte uma rede em JSON.</p>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="js/nn.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ga.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
